@@ -1,5 +1,10 @@
 # LAMCP-Archicad
 
+[![PyPI](https://img.shields.io/pypi/v/lamcp-archicad)](https://pypi.org/project/lamcp-archicad/)
+[![Python](https://img.shields.io/pypi/pyversions/lamcp-archicad)](https://pypi.org/project/lamcp-archicad/)
+[![build](https://github.com/gramaziokohler/lamcp-archicad/actions/workflows/build.yml/badge.svg)](https://github.com/gramaziokohler/lamcp-archicad/actions/workflows/build.yml)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue)](https://github.com/gramaziokohler/lamcp-archicad/blob/main/LICENSE)
+
 **LA**mbda **MCP** for Archicad: teach your LLM to do Archicad tricks.
 
 LAMCP-Archicad lets Claude Code (or any MCP client) work in a live
@@ -17,6 +22,20 @@ Sibling of [LAMCP](https://github.com/gramaziokohler/lamcp) for Grasshopper.
 > **Try it on a copy first.** The tools can create, change and delete model
 > elements. Archicad's Undo (Ctrl+Z) reverts model changes, but not file
 > operations such as saving or Teamwork send.
+
+## Quick start
+
+Already have Archicad with the Tapir Add-On, [uv](https://docs.astral.sh/uv/)
+and Claude Code? One command:
+
+```bash
+claude mcp add lamcp-archicad --scope user -- uvx lamcp-archicad
+```
+
+Open a project in Archicad, start a new Claude chat and ask:
+*"Use lamcp-archicad to check the connection to Archicad."*
+
+Starting from scratch? Follow the four steps below.
 
 ## What you need
 
@@ -77,6 +96,35 @@ claude mcp add lamcp-archicad --scope user -- uvx lamcp-archicad
 Code, or in VS Code run **Developer: Reload Window**, then start a new chat.
 Run `claude mcp list` to check that `lamcp-archicad` is listed.
 
+`uvx` downloads the package from [PyPI](https://pypi.org/project/lamcp-archicad/)
+on first use and runs it in its own isolated environment, so nothing is
+installed into your system Python.
+
+<details>
+<summary>Install with pip instead of uv</summary>
+
+If you'd rather manage Python yourself (3.10 or newer), install the package
+into a virtual environment, or with `pipx`:
+
+```bash
+pip install lamcp-archicad
+# or
+pipx install lamcp-archicad
+```
+
+This puts a `lamcp-archicad` command on your PATH. Register that command
+instead of `uvx`:
+
+```bash
+claude mcp add lamcp-archicad --scope user -- lamcp-archicad
+```
+
+If you used a virtual environment, give the full path to the command inside
+it (for example `C:\path\to\venv\Scripts\lamcp-archicad.exe`), because
+Claude Code doesn't activate the environment for you.
+
+</details>
+
 <details>
 <summary>Install the latest development version from GitHub instead</summary>
 
@@ -117,6 +165,26 @@ for example in Claude Desktop's `claude_desktop_config.json`:
 
 If the first request reports Archicad's version and the Tapir version,
 you're set up.
+
+### Updating and uninstalling
+
+`uvx` caches the version it first downloaded. To pick up a new release,
+clear that cache and restart Claude Code:
+
+```bash
+uv cache clean lamcp-archicad
+```
+
+To always run the newest release instead, register the server with
+`uvx lamcp-archicad@latest`. It then checks PyPI on every start, which
+is slightly slower. With pip, run `pip install -U lamcp-archicad`
+(or `pipx upgrade lamcp-archicad`).
+
+To remove it from Claude Code:
+
+```bash
+claude mcp remove lamcp-archicad --scope user
+```
 
 ## Troubleshooting
 
